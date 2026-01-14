@@ -1,0 +1,40 @@
+# Maven build output
+target/
+
+# Maven helper files
+pom.xml.tag
+pom.xml.releaseBackup
+pom.xml.versionsBackup
+
+# OS generated files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# IDE files
+.idea/
+*.iml
+.classpath
+.project
+.settings/
+.vscode/
+.tool-versions
+
+# Log files
+*.log
+logs/
+
+# Temporary files
+*.tmp
+*.bak
+*.swp
+*~
+
+# Compiled class files
+*.class
+
+# Executables
+*.exe
+*.dll
+*.so
+*.dylib
