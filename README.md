@@ -1,6 +1,7 @@
 [![Java](https://img.shields.io/badge/Java-17%2B-blue.svg)](https://www.oracle.com/java/)
 [![Security](https://img.shields.io/badge/Security-OpenID%20Connect-orange.svg)](https://openid.net/connect/)
 [![Framework](https://img.shields.io/badge/Framework-Apache%20Shiro-green.svg)](https://shiro.apache.org/)
+[![Docker](https://img.shields.io/badge/Docker-Enabled-blue.svg)](./Dockerfile)
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](./LICENSE)
 
 A reference implementation showcasing a secure, multi-tenant capable OpenID Connect (OIDC) integration within a Java Web environment using **Apache Shiro**. This project addresses complex real-world requirements such as multi-tab session consistency and modern dark-themed UX.
@@ -14,6 +15,7 @@ This repository provides a modular blueprint for integrating external Identity P
 - **Hybrid Session Strategy**: A custom `HybridWebSessionManager` that ensures atomic session state across multiple browser tabs without cross-pollination.
 - **RS-API Security**: Protects RESTful resources using Bearer-token authentication and JWT validation.
 - **Mock Provider**: Built-in developer mock identity provider for rapid local testing without external dependencies.
+- **Containerization**: Full Docker support for streamlined deployment and testing.
 
 ## 📚 Standards & Specifications
 
@@ -29,7 +31,7 @@ This project strictly adheres to and demonstrates the following industry standar
 - **Runtime**: Java 17+, Jakarta Servlet 6.0, Apache Tomcat 10.1+.
 - **Security**: Apache Shiro, Nimbus JOSE+JWT.
 - **Frontend**: Vanilla HTML5/CSS3 (Modern Dark Theme, "Outfit" Typography).
-- **Build**: Maven.
+- **Build & Ops**: Maven, Docker.
 
 ## 📖 Documentation
 

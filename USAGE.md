@@ -22,6 +22,28 @@ mvn clean package cargo:run
 ```
 The application will be available at: `http://localhost:8080/oidc-example/`
 
+### Running with Docker
+You can also run the application using Docker.
+
+**1. Build the image:**
+```bash
+docker build -t oidc-example .
+```
+
+**2. Run the container:**
+```bash
+docker run -d -p 8080:8080 --name oidc-app oidc-example
+```
+The application will be available at: `http://localhost:8080/` (since it is deployed as `ROOT.war` in the container).
+
+**3. Using custom configuration:**
+To use your own `oidc-providers.properties`, mount it as a volume:
+```bash
+docker run -d -p 8080:8080 \
+  -v $(pwd)/src/main/resources/oidc-providers.properties:/usr/local/tomcat/webapps/ROOT/WEB-INF/classes/oidc-providers.properties \
+  --name oidc-app oidc-example
+```
+
 ---
 
 ## Authentication Methods
