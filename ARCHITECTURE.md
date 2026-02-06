@@ -20,7 +20,9 @@ This project integrates OpenID Connect (OIDC) with Apache Shiro to provide a sec
 ## 🏗 Key Components
 
 ### Security Core
-- **`OidcRealm`**: The primary Shiro Realm that accepts OIDC tokens and manages roles/permissions based on UserInfo.
+- **`UserInfo`**: Base class representing common identity attributes (email, name, groups) for all authentication methods.
+- **`OidcUserInfo`**: Specialized `UserInfo` extension for OpenID Connect, adding provider-specific claims and tokens.
+- **`OidcRealm`**: The primary Shiro Realm that accepts OIDC tokens and manages roles/permissions based on `UserInfo`.
 - **`ApiTokenRealm`**: Validates Bearer JWTs for stateless API requests.
 - **`HybridWebSessionManager`**: Custom session manager that handles multi-tab isolation by combining browser cookies with client-side `tabId`.
 
@@ -39,6 +41,20 @@ This project integrates OpenID Connect (OIDC) with Apache Shiro to provide a sec
 
 ```mermaid
 classDiagram
+    class UserInfo {
+        +username
+        +email
+        +fullName
+        +toJson()
+    }
+    class OidcUserInfo {
+        +providerName
+        +subject
+        +idToken
+        +claims
+    }
+    UserInfo <|-- OidcUserInfo
+
     class OidcClient {
         <<interface>>
         +getName()

@@ -141,8 +141,16 @@ When displaying user names in your application, use the standardized helper in `
 
 ```java
 // Logic: Returns 'name' claim if present/non-blank, otherwise fallback to username
+// Now supports both UserInfo and OidcUserInfo types.
 String displayName = OidcUserInfo.getUserName(userInfo);
 ```
+
+---
+
+## 🛠 Features Refinement
+
+### Enriched Standard Profiles
+Logging in with `test/test` now provides a full profile including email, full name, and locale, demonstrating how the `UserInfo` architecture standardizes identity across different authentication sources.
 
 ---
 

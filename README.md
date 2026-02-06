@@ -12,6 +12,7 @@ This repository provides a modular blueprint for integrating external Identity P
 
 ### Key Technical Pillars
 - **Identity Orchestration**: Pluggable `OidcClient` architecture supporting Entra ID, Google, and Okta via Java SPI.
+- **Unified Identity Model**: A common `UserInfo` architecture that standardizes user profiles across all authentication methods.
 - **Hybrid Session Strategy**: A custom `HybridWebSessionManager` that ensures atomic session state across multiple browser tabs without cross-pollination.
 - **RS-API Security**: Protects RESTful resources using Bearer-token authentication and JWT validation.
 - **Mock Provider**: Built-in developer mock identity provider for rapid local testing without external dependencies.

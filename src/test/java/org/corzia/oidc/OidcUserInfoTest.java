@@ -29,6 +29,8 @@ public class OidcUserInfoTest {
     public void testGetUserName_PreferNameClaim() {
         OidcUserInfo info = new OidcUserInfo(
                 "google", "sub123", "user@example.com", "user@example.com",
+                "John Doe", "John", "Doe", // fullName, givenName, familyName
+                null, null, null, true, // picture, tenantId, locale, emailVerified
                 Set.of(), "id", "access", "refresh",
                 Map.of("name", "John Doe"));
 
@@ -39,6 +41,8 @@ public class OidcUserInfoTest {
     public void testGetUserName_FallbackToUsernameIfNameMissing() {
         OidcUserInfo info = new OidcUserInfo(
                 "google", "sub123", "user@example.com", "user@example.com",
+                null, null, null, // personal names
+                null, null, null, false, // picture, tenantId, locale, emailVerified
                 Set.of(), "id", "access", "refresh",
                 Map.of());
 
@@ -49,10 +53,29 @@ public class OidcUserInfoTest {
     public void testGetUserName_FallbackToUsernameIfNameBlank() {
         OidcUserInfo info = new OidcUserInfo(
                 "google", "sub123", "user@example.com", "user@example.com",
+                "  ", null, null, // fullName is blank
+                null, null, null, false, // picture, tenantId, locale, emailVerified
                 Set.of(), "id", "access", "refresh",
                 Map.of("name", "  "));
 
         assertEquals("user@example.com", OidcUserInfo.getUserName(info));
+    }
+
+    @Test
+    public void testNewFields() {
+        OidcUserInfo info = new OidcUserInfo(
+                "google", "sub123", "user@example.com", "user@example.com",
+                "John Doe", "John", "Doe",
+                "http://picture", "example.com", "en-US", true,
+                Set.of(), "id", "access", "refresh",
+                Map.of());
+
+        assertEquals("John Doe", info.getFullName());
+        assertEquals("John", info.getGivenName());
+        assertEquals("Doe", info.getFamilyName());
+        assertEquals("http://picture", info.getPicture());
+        assertEquals("example.com", info.getTenantId());
+        assertEquals("en-US", info.getLocale());
     }
 
     @Test
