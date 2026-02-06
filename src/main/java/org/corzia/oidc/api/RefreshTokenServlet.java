@@ -52,17 +52,22 @@ public class RefreshTokenServlet extends jakarta.servlet.http.HttpServlet {
             return;
         }
         String username = (String) subject.getPrincipal();
-        OidcUserInfo userInfo = OidcUserDirectory.get(username);
+        org.corzia.oidc.UserInfo userInfo = OidcUserDirectory.get(username);
         if (userInfo == null) {
             response.sendError(HttpServletResponse.SC_BAD_REQUEST, "User info not found");
             return;
         }
-        String refreshToken = userInfo.getRefreshToken();
+        if (!(userInfo instanceof OidcUserInfo oidcUserInfo)) {
+            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "User is not an OIDC user");
+            return;
+        }
+
+        String refreshToken = oidcUserInfo.getRefreshToken();
         if (refreshToken == null) {
             response.sendError(HttpServletResponse.SC_BAD_REQUEST, "No refresh token available");
             return;
         }
-        String providerName = userInfo.getProviderName();
+        String providerName = oidcUserInfo.getProviderName();
         try {
             OidcClient client = OidcClientFactory.getInstance().getClient(providerName);
             TokenResponse newTokens = HttpUtils.refreshAccessToken(
@@ -73,15 +78,22 @@ public class RefreshTokenServlet extends jakarta.servlet.http.HttpServlet {
 
             // Update stored user info with new tokens (simplified)
             OidcUserInfo updated = new OidcUserInfo(
-                    userInfo.getProviderName(),
-                    userInfo.getSubject(),
-                    userInfo.getUsername(),
-                    userInfo.getEmail(),
-                    userInfo.getGroups(),
+                    oidcUserInfo.getProviderName(),
+                    oidcUserInfo.getSubject(),
+                    oidcUserInfo.getUsername(),
+                    oidcUserInfo.getEmail(),
+                    oidcUserInfo.getFullName(),
+                    oidcUserInfo.getGivenName(),
+                    oidcUserInfo.getFamilyName(),
+                    oidcUserInfo.getPicture(),
+                    oidcUserInfo.getTenantId(),
+                    oidcUserInfo.getLocale(),
+                    oidcUserInfo.isEmailVerified(),
+                    oidcUserInfo.getGroups(),
                     newTokens.getIdToken(),
                     newTokens.getAccessToken(),
                     newTokens.getRefreshToken(),
-                    userInfo.getClaims());
+                    oidcUserInfo.getClaims());
             OidcUserDirectory.put(username, updated);
             response.setContentType("application/json");
             PrintWriter out = response.getWriter();

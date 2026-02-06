@@ -43,6 +43,19 @@ public class ShiroListener extends EnvironmentLoaderListener {
         // 2b. Create Simple Realm (Local Testing)
         org.apache.shiro.realm.SimpleAccountRealm simpleRealm = new org.apache.shiro.realm.SimpleAccountRealm();
         simpleRealm.addAccount("test", "test");
+
+        // Pre-populate test user profile
+        org.corzia.oidc.OidcUserDirectory.put(new org.corzia.oidc.UserInfo(
+                "test",
+                "test@example.com",
+                "Test User",
+                "Test",
+                "User",
+                null,
+                "en-US",
+                true,
+                java.util.Set.of("USERS", "TESTERS")));
+
         // 2c. Create API Token Realm
         org.corzia.oidc.api.ApiTokenRealm apiRealm = new org.corzia.oidc.api.ApiTokenRealm();
 

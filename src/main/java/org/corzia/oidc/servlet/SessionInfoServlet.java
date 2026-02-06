@@ -17,6 +17,9 @@ package org.corzia.oidc.servlet;
 
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
+import org.corzia.oidc.OidcUserDirectory;
+import org.corzia.oidc.UserInfo;
+import org.json.JSONObject;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -44,13 +47,26 @@ public class SessionInfoServlet extends HttpServlet {
             }
         }
 
-        resp.getWriter().write("{"
-                + "\"authenticated\": " + subject.isAuthenticated() + ", "
-                + "\"user\": \"" + (subject.getPrincipal() != null ? subject.getPrincipal() : "null") + "\", "
-                + "\"sessionId\": \"" + (subject.getSession(false) != null ? subject.getSession(false).getId() : "null")
-                + "\", "
-                + "\"tabId\": \"" + (tabId != null ? tabId : "null") + "\", "
-                + "\"browserId\": \"" + (browserId != null ? browserId : "null") + "\""
-                + "}");
+        JSONObject json = new JSONObject();
+        json.put("authenticated", subject.isAuthenticated());
+        json.put("user", subject.getPrincipal() != null ? subject.getPrincipal().toString() : null);
+        json.put("sessionId", subject.getSession(false) != null ? subject.getSession(false).getId() : null);
+        json.put("tabId", tabId);
+        json.put("browserId", browserId);
+
+        if (subject.isAuthenticated()) {
+            Object principal = subject.getPrincipal();
+            if (principal instanceof UserInfo) {
+                json.put("userInfo", ((UserInfo) principal).toJson());
+            } else if (principal instanceof String) {
+                String username = (String) principal;
+                UserInfo userInfo = OidcUserDirectory.get(username);
+                if (userInfo != null) {
+                    json.put("userInfo", userInfo.toJson());
+                }
+            }
+        }
+
+        resp.getWriter().write(json.toString());
     }
 }
