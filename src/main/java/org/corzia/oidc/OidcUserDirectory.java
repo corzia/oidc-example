@@ -18,21 +18,44 @@ package org.corzia.oidc;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+/**
+ * A shared directory for looking up authenticated user information (UserInfo)
+ * by username.
+ */
 public class OidcUserDirectory {
 
-    private static final Map<String, OidcUserInfo> USERS = new ConcurrentHashMap<>();
+    private static final Map<String, UserInfo> USERS = new ConcurrentHashMap<>();
 
-    // Store by OidcUserInfo's username
-    public static void put(OidcUserInfo info) {
-        USERS.put(info.getUsername(), info);
+    /**
+     * Stores user info by username.
+     * 
+     * @param info the UserInfo (or OidcUserInfo) object to store
+     */
+    public static void put(UserInfo info) {
+        if (info != null && info.getUsername() != null) {
+            USERS.put(info.getUsername(), info);
+        }
     }
 
-    // Overload used by RefreshTokenServlet when username is known
-    public static void put(String username, OidcUserInfo info) {
-        USERS.put(username, info);
+    /**
+     * Stores user info with an explicit username key.
+     * 
+     * @param username the username key
+     * @param info     the UserInfo object to store
+     */
+    public static void put(String username, UserInfo info) {
+        if (username != null && info != null) {
+            USERS.put(username, info);
+        }
     }
 
-    public static OidcUserInfo get(String username) {
-        return USERS.get(username);
+    /**
+     * Retrieves user info for a given username.
+     * 
+     * @param username the username key
+     * @return the UserInfo object, or null if not found
+     */
+    public static UserInfo get(String username) {
+        return username != null ? USERS.get(username) : null;
     }
 }
