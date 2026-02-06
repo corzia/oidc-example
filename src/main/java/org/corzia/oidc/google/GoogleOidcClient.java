@@ -58,12 +58,26 @@ public class GoogleOidcClient extends AbstractOidcClient {
         Map<String, Object> claimMap = claims.getClaims();
 
         String email = (String) claimMap.get("email");
+        String fullName = (String) claimMap.get("name");
+        String givenName = (String) claimMap.get("given_name");
+        String familyName = (String) claimMap.get("family_name");
+        String picture = (String) claimMap.get("picture");
+        String tenantId = (String) claimMap.get("hd");
+        String locale = (String) claimMap.get("locale");
+        boolean emailVerified = Boolean.TRUE.equals(claimMap.get("email_verified"));
 
         return new OidcUserInfo(
                 getName(),
                 (String) claimMap.get("sub"),
                 email,
                 email,
+                fullName,
+                givenName,
+                familyName,
+                picture,
+                tenantId,
+                locale,
+                emailVerified,
                 Set.of(),
                 token.getIdToken(),
                 token.getAccessToken(),

@@ -61,12 +61,25 @@ public class OktaOidcClient extends AbstractOidcClient {
 
         String email = (String) claimMap.get("email");
         String subject = (String) claimMap.get("sub");
+        String fullName = (String) claimMap.get("name");
+        String givenName = (String) claimMap.get("given_name");
+        String familyName = (String) claimMap.get("family_name");
+        String picture = (String) claimMap.get("picture");
+        String locale = (String) claimMap.get("locale");
+        boolean emailVerified = Boolean.TRUE.equals(claimMap.get("email_verified"));
 
         return new OidcUserInfo(
                 getName(),
                 subject,
                 email,
                 email,
+                fullName,
+                givenName,
+                familyName,
+                picture,
+                null, // tenantId not typical in Okta
+                locale,
+                emailVerified,
                 Set.of(),
                 token.getIdToken(),
                 token.getAccessToken(),

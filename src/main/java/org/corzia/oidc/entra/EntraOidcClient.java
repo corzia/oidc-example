@@ -28,57 +28,72 @@ import org.corzia.oidc.utils.TokenResponse;
 
 public class EntraOidcClient extends AbstractOidcClient {
 
-    public EntraOidcClient() {
-        super("entra");
-    }
+        public EntraOidcClient() {
+                super("entra");
+        }
 
-    @Override
-    public String buildAuthorizationUrl(HttpServletRequest request, String state, String nonce) {
-        return authorizationEndpoint()
-                + "?client_id=" + url(clientId())
-                + "&response_type=code"
-                + "&redirect_uri=" + url(redirectUri())
-                + "&scope=" + url(scope())
-                + "&state=" + url(state)
-                + "&nonce=" + url(nonce);
-    }
+        @Override
+        public String buildAuthorizationUrl(HttpServletRequest request, String state, String nonce) {
+                return authorizationEndpoint()
+                                + "?client_id=" + url(clientId())
+                                + "&response_type=code"
+                                + "&redirect_uri=" + url(redirectUri())
+                                + "&scope=" + url(scope())
+                                + "&state=" + url(state)
+                                + "&nonce=" + url(nonce);
+        }
 
-    @Override
-    public OidcUserInfo exchangeCodeForUserInfo(HttpServletRequest request,
-            String code,
-            String expectedNonce) throws Exception {
+        @Override
+        public OidcUserInfo exchangeCodeForUserInfo(HttpServletRequest request,
+                        String code,
+                        String expectedNonce) throws Exception {
 
-        TokenResponse token = HttpUtils.exchangeCode(
-                tokenEndpoint(),
-                clientId(),
-                clientSecret(),
-                code,
-                redirectUri());
+                TokenResponse token = HttpUtils.exchangeCode(
+                                tokenEndpoint(),
+                                clientId(),
+                                clientSecret(),
+                                code,
+                                redirectUri());
 
-        JWTClaimsSet claims = validateIdToken(token.getIdToken(), expectedNonce);
-        Map<String, Object> claimMap = claims.getClaims();
+                JWTClaimsSet claims = validateIdToken(token.getIdToken(), expectedNonce);
+                Map<String, Object> claimMap = claims.getClaims();
 
-        String username = (String) claimMap.getOrDefault(
-                "preferred_username",
-                claimMap.get("email"));
+                String username = (String) claimMap.getOrDefault(
+                                "preferred_username",
+                                claimMap.get("email"));
 
-        String subject = (String) claimMap.get("oid");
+                String subject = (String) claimMap.get("oid");
 
-        @SuppressWarnings("unchecked")
-        Set<String> groups = claimMap.containsKey("groups")
-                ? new HashSet<>((List<String>) claimMap.get("groups"))
-                : Set.of();
+                @SuppressWarnings("unchecked")
+                Set<String> groups = claimMap.containsKey("groups")
+                                ? new HashSet<>((List<String>) claimMap.get("groups"))
+                                : Set.of();
 
-        return new OidcUserInfo(
-                getName(),
-                subject,
-                username,
-                (String) claimMap.get("email"),
-                groups,
-                token.getIdToken(),
-                token.getAccessToken(),
-                token.getRefreshToken(),
-                claimMap);
-    }
+                String fullName = (String) claimMap.get("name");
+                String givenName = (String) claimMap.get("given_name");
+                String familyName = (String) claimMap.get("family_name");
+                String picture = (String) claimMap.get("picture");
+                String tenantId = (String) claimMap.get("tid");
+                String locale = (String) claimMap.get("locale");
+                boolean emailVerified = Boolean.TRUE.equals(claimMap.get("email_verified"));
+
+                return new OidcUserInfo(
+                                getName(),
+                                subject,
+                                username,
+                                (String) claimMap.get("email"),
+                                fullName,
+                                givenName,
+                                familyName,
+                                picture,
+                                tenantId,
+                                locale,
+                                emailVerified,
+                                groups,
+                                token.getIdToken(),
+                                token.getAccessToken(),
+                                token.getRefreshToken(),
+                                claimMap);
+        }
 
 }

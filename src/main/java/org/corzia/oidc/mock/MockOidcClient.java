@@ -74,11 +74,18 @@ public class MockOidcClient extends AbstractOidcClient {
                     "mock-sub-" + UUID.randomUUID(),
                     "success_user",
                     "success@example.com",
+                    "Success Mock User", // fullName
+                    "Success", // givenName
+                    "User", // familyName
+                    null, // picture
+                    null, // tenantId
+                    null, // locale
+                    true, // emailVerified
                     java.util.Set.of("MOCK_USER", "OFFLINE_ACCESS"),
                     "mock.id.token",
                     "mock.access.token",
                     "mock.refresh.token",
-                    Map.of("name", "Success Mock User"));
+                    Map.of("name", "Success Mock User", "email_verified", true));
         }
 
         throw new Exception("Unknown mock user: " + code);
