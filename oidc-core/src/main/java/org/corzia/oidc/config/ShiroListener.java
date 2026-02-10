@@ -99,6 +99,8 @@ public class ShiroListener extends EnvironmentLoaderListener {
                 authcFilter.setLoginUrl("/");
 
                 // Configure chains
+                filterChainManager.createChain("/api/providers", "tabIdMaster, headers, anon");
+                filterChainManager.createChain("/api/session", "tabIdMaster, headers, anon");
                 filterChainManager.createChain("/api/login", "tabIdMaster, headers, rateLimitAuth, contentType, csrf");
                 filterChainManager.createChain("/portal/oidc/login", "tabIdMaster, headers, rateLimitAuth");
                 filterChainManager.createChain("/portal/oidc/callback", "tabIdMaster, headers, rateLimitAuth");

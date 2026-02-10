@@ -41,8 +41,15 @@ public class SecurityHeaderFilter implements Filter {
             // Add security headers
             httpResponse.setHeader("X-Frame-Options", "DENY");
             httpResponse.setHeader("X-Content-Type-Options", "nosniff");
-            // Standard CSP: self and no framing.
-            httpResponse.setHeader("Content-Security-Policy", "default-src 'self'; frame-ancestors 'none';");
+            // Refined CSP: allow Google Fonts, inline styles/scripts for UI, and dynamic
+            // images for OIDC logos
+            String csp = "default-src 'self'; " +
+                    "script-src 'self' 'unsafe-inline'; " +
+                    "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; " +
+                    "font-src 'self' https://fonts.gstatic.com; " +
+                    "img-src 'self' data: *; " +
+                    "frame-ancestors 'none';";
+            httpResponse.setHeader("Content-Security-Policy", csp);
             // HSTS: 1 year (only if using HTTPS, which is generally handled at the
             // LB/Server level, but good to have)
             httpResponse.setHeader("Strict-Transport-Security", "max-age=31536000; includeSubDomains");
