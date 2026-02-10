@@ -26,6 +26,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import java.io.IOException;
+import java.util.Properties;
 import java.util.Set;
 import java.util.UUID;
 
@@ -43,9 +44,17 @@ public class CsrfFilter implements Filter {
     private static final String CSRF_TOKEN_COOKIE_NAME = "XSRF-TOKEN";
     private static final String CSRF_TOKEN_HEADER_NAME = "X-XSRF-TOKEN";
     private static final Set<String> UNSAFE_METHODS = Set.of("POST", "PUT", "DELETE", "PATCH");
+    private static final Set<String> exemptPaths = new java.util.HashSet<>();
 
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
+        Properties securityProps = OidcConfigManager.getSecurityConfig("security");
+        String paths = securityProps.getProperty("csrf.exempt_paths");
+        if (paths != null && !paths.isBlank()) {
+            for (String p : paths.split(",")) {
+                exemptPaths.add(p.trim());
+            }
+        }
     }
 
     @Override
@@ -61,28 +70,59 @@ public class CsrfFilter implements Filter {
         HttpSession session = httpRequest.getSession(true);
         String token = (String) session.getAttribute(CSRF_TOKEN_SESSION_ATTR);
 
+        // Race condition fix: If session has no token, adopt it from the cookie if
+        // present.
+        // This ensures that when Shiro switches from 'default' session to a
+        // tab-specific one,
+        // the CSRF token remains stable for the browser.
         if (token == null) {
-            token = UUID.randomUUID().toString();
-            session.setAttribute(CSRF_TOKEN_SESSION_ATTR, token);
+            String cookieToken = getCookieValue(httpRequest, CSRF_TOKEN_COOKIE_NAME);
+            if (cookieToken != null && !cookieToken.isBlank()) {
+                token = cookieToken;
+                session.setAttribute(CSRF_TOKEN_SESSION_ATTR, token);
+            } else {
+                token = UUID.randomUUID().toString();
+                session.setAttribute(CSRF_TOKEN_SESSION_ATTR, token);
+            }
         }
 
         // Always update/set the cookie so the frontend can read it
         Cookie csrfCookie = new Cookie(CSRF_TOKEN_COOKIE_NAME, token);
         csrfCookie.setPath("/");
         csrfCookie.setHttpOnly(false); // Frontend must read this
-        // csrfCookie.setSecure(true); // Should be enabled for HTTPS
+        if (httpRequest.isSecure()) {
+            csrfCookie.setSecure(true);
+        }
         httpResponse.addCookie(csrfCookie);
 
         // Validate unsafe methods
-        if (UNSAFE_METHODS.contains(httpRequest.getMethod().toUpperCase())) {
+        String requestUri = httpRequest.getRequestURI();
+        String contextPath = httpRequest.getContextPath();
+        String relativePath = contextPath.isEmpty() ? requestUri : requestUri.substring(contextPath.length());
+        boolean isExempt = exemptPaths.stream().anyMatch(p -> relativePath.startsWith(p));
+
+        if (!isExempt && UNSAFE_METHODS.contains(httpRequest.getMethod().toUpperCase())) {
             String headerToken = httpRequest.getHeader(CSRF_TOKEN_HEADER_NAME);
-            if (headerToken == null || !headerToken.equals(token)) {
+            String paramToken = httpRequest.getParameter("_csrf");
+
+            if ((headerToken == null || !headerToken.equals(token)) &&
+                    (paramToken == null || !paramToken.equals(token))) {
                 httpResponse.sendError(HttpServletResponse.SC_FORBIDDEN, "Invalid or missing CSRF token");
                 return;
             }
         }
 
         chain.doFilter(request, response);
+    }
+
+    private String getCookieValue(HttpServletRequest req, String name) {
+        if (req.getCookies() == null)
+            return null;
+        for (Cookie c : req.getCookies()) {
+            if (name.equals(c.getName()))
+                return c.getValue();
+        }
+        return null;
     }
 
     @Override

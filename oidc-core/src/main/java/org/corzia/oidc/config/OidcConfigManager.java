@@ -12,6 +12,7 @@ import org.slf4j.LoggerFactory;
 public class OidcConfigManager {
     private static final Logger log = LoggerFactory.getLogger(OidcConfigManager.class);
     private static final Map<String, Properties> providerConfigs = new java.util.concurrent.ConcurrentHashMap<>();
+    private static final Map<String, Properties> securityConfigs = new java.util.concurrent.ConcurrentHashMap<>();
 
     static {
         loadInitialConfig();
@@ -24,14 +25,20 @@ public class OidcConfigManager {
                 p.load(is);
                 log.info("Loaded initial OIDC configuration from oidc-providers.properties");
 
-                // Group by provider prefix (e.g. google.CLIENT_ID -> google)
+                // Group properties
                 p.stringPropertyNames().forEach(key -> {
                     int dot = key.indexOf('.');
                     if (dot > 0) {
-                        String provider = key.substring(0, dot).toLowerCase();
+                        String category = key.substring(0, dot).toLowerCase();
                         String subKey = key.substring(dot + 1);
-                        providerConfigs.computeIfAbsent(provider, k -> new Properties())
-                                .setProperty(subKey, p.getProperty(key));
+
+                        if ("security".equals(category)) {
+                            securityConfigs.computeIfAbsent(category, k -> new Properties())
+                                    .setProperty(subKey, p.getProperty(key));
+                        } else {
+                            providerConfigs.computeIfAbsent(category, k -> new Properties())
+                                    .setProperty(subKey, p.getProperty(key));
+                        }
                     }
                 });
             }
@@ -117,5 +124,18 @@ public class OidcConfigManager {
 
     public static Map<String, Properties> getAllProviderConfigs() {
         return new java.util.HashMap<>(providerConfigs);
+    }
+
+    /**
+     * Retrieves global security configuration (e.g. key starting with 'security.').
+     * Category is usually 'security'.
+     */
+    public static Properties getSecurityConfig(String category) {
+        Properties p = securityConfigs.get(category.toLowerCase());
+        Properties result = new Properties();
+        if (p != null) {
+            result.putAll(p);
+        }
+        return result;
     }
 }

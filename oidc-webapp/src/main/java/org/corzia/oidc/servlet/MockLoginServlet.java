@@ -37,6 +37,8 @@ public class MockLoginServlet extends HttpServlet {
         String state = req.getParameter("state");
         String nonce = req.getParameter("nonce");
 
+        String csrfToken = (String) req.getSession().getAttribute("CSRF_TOKEN");
+
         resp.setContentType("text/html");
         resp.getWriter().write(
                 "<!DOCTYPE html>" +
@@ -105,6 +107,7 @@ public class MockLoginServlet extends HttpServlet {
                         "        <form method='POST'>" +
                         "            <input type='hidden' name='state' value='" + state + "'>" +
                         "            <input type='hidden' name='nonce' value='" + nonce + "'>" +
+                        "            <input type='hidden' name='_csrf' value='" + csrfToken + "'>" +
                         "            <div class='form-group'>" +
                         "                <label for='email'>Email Address</label>" +
                         "                <input type='email' id='email' name='email' placeholder='name@company.com' required autocomplete='off'>"

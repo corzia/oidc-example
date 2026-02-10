@@ -99,17 +99,17 @@ public class ShiroListener extends EnvironmentLoaderListener {
                 authcFilter.setLoginUrl("/");
 
                 // Configure chains
-                filterChainManager.createChain("/api/providers", "tabIdMaster, headers, anon");
-                filterChainManager.createChain("/api/session", "tabIdMaster, headers, anon");
-                filterChainManager.createChain("/api/login", "tabIdMaster, headers, rateLimitAuth, contentType, csrf");
-                filterChainManager.createChain("/portal/oidc/login", "tabIdMaster, headers, rateLimitAuth");
-                filterChainManager.createChain("/portal/oidc/callback", "tabIdMaster, headers, rateLimitAuth");
+                filterChainManager.createChain("/api/providers", "tabIdMaster, headers, csrf, anon");
+                filterChainManager.createChain("/api/session", "tabIdMaster, headers, csrf, anon");
+                filterChainManager.createChain("/api/login", "tabIdMaster, headers, csrf, rateLimitAuth, contentType");
+                filterChainManager.createChain("/portal/oidc/login", "tabIdMaster, headers, csrf, rateLimitAuth");
+                filterChainManager.createChain("/portal/oidc/callback", "tabIdMaster, headers, csrf, rateLimitAuth");
                 filterChainManager.createChain("/api/rs/**", "tabIdMaster, headers, rateLimitApi, contentType, bearer");
                 filterChainManager.createChain("/api/**",
                                 "tabIdMaster, headers, rateLimitApi, contentType, csrf, authc");
                 filterChainManager.createChain("/portal/logout", "tabIdMaster, headers, csrf, logout");
                 filterChainManager.createChain("/secure.html", "tabIdMaster, headers, csrf, authc");
-                filterChainManager.createChain("/**", "tabIdMaster, headers");
+                filterChainManager.createChain("/**", "tabIdMaster, headers, csrf");
 
                 // Optional: configure logout redirect
                 org.apache.shiro.web.filter.authc.LogoutFilter logoutFilter = (org.apache.shiro.web.filter.authc.LogoutFilter) filterChainManager
