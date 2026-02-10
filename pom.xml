@@ -2,11 +2,10 @@
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <groupId>org.corzia.oidc</groupId>
-  <artifactId>oidc-example</artifactId>
-  <packaging>war</packaging>
+  <artifactId>oidc-parent</artifactId>
+  <packaging>pom</packaging>
   <version>1.0-SNAPSHOT</version>
-  <name>oidc-example Maven Webapp</name>
-  <url>http://maven.apache.org</url>
+  <name>oidc-parent</name>
   
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -14,104 +13,97 @@
     <maven.compiler.target>21</maven.compiler.target>
     <shiro.version>2.0.0</shiro.version>
     <jakarta.servlet.version>6.0.0</jakarta.servlet.version>
+    <osgi.version>8.0.0</osgi.version>
   </properties>
-  
-  <dependencies>
-    <!-- Jakarta Servlet API -->
-    <dependency>
-      <groupId>jakarta.servlet</groupId>
-      <artifactId>jakarta.servlet-api</artifactId>
-      <version>${jakarta.servlet.version}</version>
-      <scope>provided</scope>
-    </dependency>
 
-    <!-- Apache Shiro -->
-    <dependency>
-      <groupId>org.apache.shiro</groupId>
-      <artifactId>shiro-core</artifactId>
-      <classifier>jakarta</classifier>
-      <version>${shiro.version}</version>
-    </dependency> 
-     <dependency>
-      <groupId>org.apache.shiro</groupId>
-      <artifactId>shiro-web</artifactId>
-      <classifier>jakarta</classifier>
-      <version>${shiro.version}</version>
-      <exclusions>
-        <exclusion>
-          <groupId>org.apache.shiro</groupId>
-          <artifactId>shiro-core</artifactId>
-        </exclusion>
-      </exclusions>
-    </dependency>
-    <!-- Shiro 2.0.0 Jakarta classifier handles Jakarta EE 10+ compatibility -->
+  <modules>
+    <module>oidc-core</module>
+    <module>oidc-webapp</module>
+  </modules>
 
-    <!-- Logging -->
-    <dependency>
-        <groupId>org.slf4j</groupId>
-        <artifactId>slf4j-simple</artifactId>
-        <version>2.0.7</version>
-    </dependency>
-
-     <!-- Jackson for JSON -->
-    <dependency>
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <groupId>org.corzia.oidc</groupId>
+        <artifactId>oidc-core</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <!-- Shiro 2.0.0 Jakarta classifier handles Jakarta EE 10+ compatibility -->
+      <dependency>
+        <groupId>org.apache.shiro</groupId>
+        <artifactId>shiro-core</artifactId>
+        <classifier>jakarta</classifier>
+        <version>${shiro.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.shiro</groupId>
+        <artifactId>shiro-web</artifactId>
+        <classifier>jakarta</classifier>
+        <version>${shiro.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>jakarta.servlet</groupId>
+        <artifactId>jakarta.servlet-api</artifactId>
+        <version>${jakarta.servlet.version}</version>
+      </dependency>
+      <dependency>
         <groupId>com.nimbusds</groupId>
         <artifactId>nimbus-jose-jwt</artifactId>
         <version>9.37.3</version>
-    </dependency>
-    <!-- org.json -->
-    <dependency>
+      </dependency>
+      <dependency>
         <groupId>org.json</groupId>
         <artifactId>json</artifactId>
         <version>20231013</version>
-    </dependency>
+      </dependency>
+      <dependency>
+        <groupId>org.slf4j</groupId>
+        <artifactId>slf4j-api</artifactId>
+        <version>2.0.7</version>
+      </dependency>
+      <dependency>
+        <groupId>org.osgi</groupId>
+        <artifactId>osgi.core</artifactId>
+        <version>${osgi.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.osgi</groupId>
+        <artifactId>osgi.cmpn</artifactId>
+        <version>7.0.0</version>
+      </dependency>
+      <dependency>
+        <groupId>com.bucket4j</groupId>
+        <artifactId>bucket4j-core</artifactId>
+        <version>8.10.1</version>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
 
-    <!-- Testing -->
-    <dependency>
-        <groupId>org.junit.jupiter</groupId>
-        <artifactId>junit-jupiter</artifactId>
-        <version>5.10.0</version>
-        <scope>test</scope>
-    </dependency>
-    <dependency>
-        <groupId>org.mockito</groupId>
-        <artifactId>mockito-junit-jupiter</artifactId>
-        <version>5.5.0</version>
-        <scope>test</scope>
-    </dependency>
-    
-  </dependencies>
-  
   <build>
-    <finalName>oidc-example</finalName>
-    <plugins>
+    <pluginManagement>
+      <plugins>
         <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-war-plugin</artifactId>
-            <version>3.4.0</version>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-compiler-plugin</artifactId>
+          <version>3.13.0</version>
         </plugin>
-        <!-- Cargo Plugin to run Tomcat 10 -->
         <plugin>
-            <groupId>org.codehaus.cargo</groupId>
-            <artifactId>cargo-maven3-plugin</artifactId>
-            <version>1.10.13</version>
-            <configuration>
-                <container>
-                    <containerId>tomcat10x</containerId>
-                    <artifactInstaller>
-                        <groupId>org.apache.tomcat</groupId>
-                        <artifactId>tomcat</artifactId>
-                        <version>10.1.13</version>
-                    </artifactInstaller>
-                </container>
-                <configuration>
-                    <properties>
-                        <cargo.servlet.port>8080</cargo.servlet.port>
-                    </properties>
-                </configuration>
-            </configuration>
-
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-war-plugin</artifactId>
+          <version>3.4.0</version>
         </plugin>
-    </plugins>
+        <plugin>
+          <groupId>org.apache.felix</groupId>
+          <artifactId>maven-bundle-plugin</artifactId>
+          <version>5.1.9</version>
+          <extensions>true</extensions>
+        </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-shade-plugin</artifactId>
+          <version>3.5.1</version>
+        </plugin>
+      </plugins>
+    </pluginManagement>
   </build>
 </project>

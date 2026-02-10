@@ -1,0 +1,66 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>org.corzia.oidc</groupId>
+    <artifactId>oidc-parent</artifactId>
+    <version>1.0-SNAPSHOT</version>
+  </parent>
+
+  <artifactId>oidc-webapp</artifactId>
+  <packaging>war</packaging>
+  <name>oidc-webapp</name>
+
+  <dependencies>
+    <dependency>
+      <groupId>org.corzia.oidc</groupId>
+      <artifactId>oidc-core</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.shiro</groupId>
+      <artifactId>shiro-core</artifactId>
+      <classifier>jakarta</classifier>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.shiro</groupId>
+      <artifactId>shiro-web</artifactId>
+      <classifier>jakarta</classifier>
+    </dependency>
+    <dependency>
+      <groupId>jakarta.servlet</groupId>
+      <artifactId>jakarta.servlet-api</artifactId>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+        <groupId>org.slf4j</groupId>
+        <artifactId>slf4j-simple</artifactId>
+        <version>2.0.7</version>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <finalName>oidc-example</finalName>
+    <plugins>
+      <plugin>
+          <groupId>org.codehaus.cargo</groupId>
+          <artifactId>cargo-maven3-plugin</artifactId>
+          <version>1.10.13</version>
+          <configuration>
+              <container>
+                  <containerId>tomcat10x</containerId>
+                  <artifactInstaller>
+                      <groupId>org.apache.tomcat</groupId>
+                      <artifactId>tomcat</artifactId>
+                      <version>10.1.13</version>
+                  </artifactInstaller>
+              </container>
+              <configuration>
+                  <properties>
+                      <cargo.servlet.port>8080</cargo.servlet.port>
+                  </properties>
+              </configuration>
+          </configuration>
+      </plugin>
+    </plugins>
+  </build>
+</project>
