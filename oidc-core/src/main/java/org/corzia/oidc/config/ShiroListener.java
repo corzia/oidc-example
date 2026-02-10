@@ -80,6 +80,7 @@ public class ShiroListener extends EnvironmentLoaderListener {
 
                 // Add our custom filters
                 filterChainManager.addFilter("headers", new org.corzia.oidc.config.SecurityHeaderFilter());
+                filterChainManager.addFilter("tabIdMaster", new org.corzia.oidc.config.TabIdEnforcementFilter());
                 filterChainManager.addFilter("contentType", new org.corzia.oidc.config.ContentTypeFilter());
                 filterChainManager.addFilter("csrf", new org.corzia.oidc.config.CsrfFilter());
                 filterChainManager.addFilter("bearer", new org.corzia.oidc.api.BearerAuthFilter());
@@ -98,14 +99,15 @@ public class ShiroListener extends EnvironmentLoaderListener {
                 authcFilter.setLoginUrl("/");
 
                 // Configure chains
-                filterChainManager.createChain("/api/login", "headers, rateLimitAuth, contentType, csrf");
-                filterChainManager.createChain("/portal/oidc/login", "headers, rateLimitAuth");
-                filterChainManager.createChain("/portal/oidc/callback", "headers, rateLimitAuth");
-                filterChainManager.createChain("/api/rs/**", "headers, rateLimitApi, contentType, bearer");
-                filterChainManager.createChain("/api/**", "headers, rateLimitApi, contentType, csrf, authc");
-                filterChainManager.createChain("/portal/logout", "headers, csrf, logout");
-                filterChainManager.createChain("/secure.html", "headers, csrf, authc");
-                filterChainManager.createChain("/**", "headers");
+                filterChainManager.createChain("/api/login", "tabIdMaster, headers, rateLimitAuth, contentType, csrf");
+                filterChainManager.createChain("/portal/oidc/login", "tabIdMaster, headers, rateLimitAuth");
+                filterChainManager.createChain("/portal/oidc/callback", "tabIdMaster, headers, rateLimitAuth");
+                filterChainManager.createChain("/api/rs/**", "tabIdMaster, headers, rateLimitApi, contentType, bearer");
+                filterChainManager.createChain("/api/**",
+                                "tabIdMaster, headers, rateLimitApi, contentType, csrf, authc");
+                filterChainManager.createChain("/portal/logout", "tabIdMaster, headers, csrf, logout");
+                filterChainManager.createChain("/secure.html", "tabIdMaster, headers, csrf, authc");
+                filterChainManager.createChain("/**", "tabIdMaster, headers");
 
                 // Optional: configure logout redirect
                 org.apache.shiro.web.filter.authc.LogoutFilter logoutFilter = (org.apache.shiro.web.filter.authc.LogoutFilter) filterChainManager

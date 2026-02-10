@@ -17,6 +17,7 @@ package org.corzia.oidc.servlet;
 
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
+import org.apache.shiro.session.Session;
 import org.corzia.oidc.OidcUserDirectory;
 import org.corzia.oidc.UserInfo;
 import org.json.JSONObject;
@@ -35,10 +36,18 @@ public class SessionInfoServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         try {
             Subject subject = SecurityUtils.getSubject();
-
             resp.setContentType("application/json");
 
-            String tabId = req.getHeader("X-Tab-Id");
+            String tabId = null;
+            Session session = subject.getSession(false);
+            if (session != null) {
+                tabId = (String) session
+                        .getAttribute(org.corzia.oidc.config.HybridWebSessionManager.SESSION_ATTR_TAB_ID);
+            }
+            if (tabId == null) {
+                tabId = req.getHeader("X-Tab-Id");
+            }
+
             String browserId = null;
             if (req.getCookies() != null) {
                 for (jakarta.servlet.http.Cookie c : req.getCookies()) {
@@ -51,7 +60,7 @@ public class SessionInfoServlet extends HttpServlet {
             JSONObject json = new JSONObject();
             json.put("authenticated", subject.isAuthenticated());
             json.put("user", subject.getPrincipal() != null ? subject.getPrincipal().toString() : null);
-            json.put("sessionId", subject.getSession(false) != null ? subject.getSession(false).getId() : null);
+            json.put("sessionId", session != null ? session.getId() : null);
             json.put("tabId", tabId);
             json.put("browserId", browserId);
 

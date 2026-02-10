@@ -36,6 +36,7 @@ public class HybridWebSessionManager extends DefaultWebSessionManager {
 
     public static final String HEADER_TAB_ID = "X-Tab-Id";
     public static final String BROWSER_COOKIE_NAME = "OIDC_BROWSER_ID";
+    public static final String SESSION_ATTR_TAB_ID = "shiro_tab_id";
 
     public HybridWebSessionManager() {
         super();
@@ -80,6 +81,7 @@ public class HybridWebSessionManager extends DefaultWebSessionManager {
         SimpleSession session = new SimpleSession();
         session.setId(compositeId);
         session.setHost(wsc.getHost());
+        session.setAttribute(SESSION_ATTR_TAB_ID, tabId);
 
         ((org.apache.shiro.session.mgt.DefaultSessionManager) this).getSessionDAO().create(session);
 
