@@ -96,7 +96,7 @@ public class OidcCallbackServlet extends HttpServlet {
 
             // Generic message for the user to prevent information leakage
             String message = "Authentication failed. Please contact support.";
-            String errorUrl = req.getContextPath() + "/error.html?message="
+            String errorUrl = req.getContextPath() + "/error.html?" + OidcConstants.PARAM_MESSAGE + "="
                     + java.net.URLEncoder.encode(message, "UTF-8")
                     + "&errorId=" + errorId;
 

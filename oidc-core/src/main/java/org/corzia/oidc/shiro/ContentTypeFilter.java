@@ -45,12 +45,13 @@ public class ContentTypeFilter implements Filter {
         String acceptHeader = httpRequest.getHeader("Accept");
         if (acceptHeader != null && !acceptHeader.contains("*/*")
                 && !acceptHeader.contains(OidcConstants.TYPE_JSON)
-                && !acceptHeader.contains("application/*")) {
+                && !acceptHeader.contains(OidcConstants.TYPE_APP_WILD)) {
 
             httpResponse.setStatus(HttpServletResponse.SC_NOT_ACCEPTABLE); // 406
             httpResponse.setContentType(OidcConstants.TYPE_JSON);
             httpResponse.getWriter()
-                    .write("{\"success\": false, \"message\": \"Only " + OidcConstants.TYPE_JSON
+                    .write("{\"" + OidcConstants.JKEY_SUCCESS + "\": false, \"" + OidcConstants.JKEY_MESSAGE
+                            + "\": \"Only " + OidcConstants.TYPE_JSON
                             + " is supported for responses.\"}");
             return;
         }
@@ -68,7 +69,8 @@ public class ContentTypeFilter implements Filter {
                 httpResponse.setStatus(HttpServletResponse.SC_UNSUPPORTED_MEDIA_TYPE); // 415
                 httpResponse.setContentType(OidcConstants.TYPE_JSON);
                 httpResponse.getWriter().write(
-                        "{\"success\": false, \"message\": \"Unsupported Content-Type. Expected "
+                        "{\"" + OidcConstants.JKEY_SUCCESS + "\": false, \"" + OidcConstants.JKEY_MESSAGE
+                                + "\": \"Unsupported Content-Type. Expected "
                                 + OidcConstants.TYPE_JSON + " or " + OidcConstants.TYPE_FORM + ".\"}");
                 return;
             }

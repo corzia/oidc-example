@@ -37,6 +37,7 @@ public final class OidcConstants {
     public static final String PARAM_STATE = "state";
     public static final String PARAM_CODE = "code";
     public static final String PARAM_PROVIDER = "provider";
+    public static final String PARAM_MESSAGE = "message";
 
     // Session Attributes
     public static final String ATTR_CSRF_TOKEN = "CSRF_TOKEN";
@@ -62,6 +63,11 @@ public final class OidcConstants {
     public static final String TYPE_TEXT = "text/plain";
     public static final String TYPE_FORM = "application/x-www-form-urlencoded";
     public static final String TYPE_HTML = "text/html";
+    public static final String TYPE_APP_WILD = "application/*";
+
+    // JSON Keys
+    public static final String JKEY_SUCCESS = "success";
+    public static final String JKEY_MESSAGE = "message";
 
     // Configuration Properties
     public static final String PROP_CSRF_EXEMPT_PATHS = "csrf.exempt_paths";

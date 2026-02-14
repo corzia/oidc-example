@@ -53,12 +53,14 @@ public class LoginServlet extends HttpServlet {
             log.info("User {} logged in successfully on tab {}", user, tabId);
 
             resp.setContentType(OidcConstants.TYPE_JSON);
-            resp.getWriter().write("{\"success\": true, \"sessionId\": \"" + subject.getSession().getId() + "\"}");
+            resp.getWriter().write("{\"" + OidcConstants.JKEY_SUCCESS + "\": true, \"sessionId\": \""
+                    + subject.getSession().getId() + "\"}");
 
         } catch (Exception e) {
             log.error("Login failed", e);
             resp.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-            resp.getWriter().write("{\"success\": false, \"message\": \"Authentication failed\"}");
+            resp.getWriter().write("{\"" + OidcConstants.JKEY_SUCCESS + "\": false, \"" + OidcConstants.JKEY_MESSAGE
+                    + "\": \"Authentication failed\"}");
         }
     }
 }

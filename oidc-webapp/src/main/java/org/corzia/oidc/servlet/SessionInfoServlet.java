@@ -59,6 +59,7 @@ public class SessionInfoServlet extends HttpServlet {
             }
 
             JSONObject json = new JSONObject();
+            json.put(OidcConstants.JKEY_SUCCESS, true); // Added success for consistency
             json.put("authenticated", subject.isAuthenticated());
             json.put("user", subject.getPrincipal() != null ? subject.getPrincipal().toString() : null);
             json.put("sessionId", session != null ? session.getId() : null);
@@ -82,7 +83,8 @@ public class SessionInfoServlet extends HttpServlet {
         } catch (Exception e) {
             org.slf4j.LoggerFactory.getLogger(SessionInfoServlet.class).error("Failed to retrieve session info", e);
             resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-            resp.getWriter().write("{\"success\": false, \"message\": \"Internal server error\"}");
+            resp.getWriter().write("{\"" + OidcConstants.JKEY_SUCCESS + "\": false, \"" + OidcConstants.JKEY_MESSAGE
+                    + "\": \"Internal server error\"}");
         }
     }
 }

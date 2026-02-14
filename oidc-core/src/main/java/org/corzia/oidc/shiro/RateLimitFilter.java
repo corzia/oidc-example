@@ -72,7 +72,8 @@ public class RateLimitFilter implements Filter {
             httpResponse.setStatus(429); // Too Many Requests
             httpResponse.setContentType(OidcConstants.TYPE_JSON);
             httpResponse.getWriter()
-                    .write("{\"success\": false, \"message\": \"Too many requests. Please slow down.\"}");
+                    .write("{\"" + OidcConstants.JKEY_SUCCESS + "\": false, \"" + OidcConstants.JKEY_MESSAGE
+                            + "\": \"Too many requests. Please slow down.\"}");
         }
     }
 

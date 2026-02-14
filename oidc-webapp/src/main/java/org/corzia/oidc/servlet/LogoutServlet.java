@@ -36,6 +36,6 @@ public class LogoutServlet extends HttpServlet {
             subject.logout();
         }
         resp.setContentType(OidcConstants.TYPE_JSON);
-        resp.getWriter().write("{\"success\": true}");
+        resp.getWriter().write("{\"" + OidcConstants.JKEY_SUCCESS + "\": true}");
     }
 }

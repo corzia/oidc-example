@@ -36,7 +36,7 @@ public class HelloApiServlet extends HttpServlet {
 
         resp.setContentType(OidcConstants.TYPE_JSON);
         resp.getWriter().write("{"
-                + "\"message\": \"Hello from RS-API\", "
+                + "\"" + OidcConstants.JKEY_MESSAGE + "\": \"Hello from RS-API\", "
                 + "\"principal\": \"" + subject.getPrincipal() + "\""
                 + "}");
     }
