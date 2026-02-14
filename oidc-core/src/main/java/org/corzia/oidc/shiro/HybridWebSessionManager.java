@@ -57,7 +57,7 @@ public class HybridWebSessionManager extends DefaultWebSessionManager {
 
         if (browserId != null) {
             String composite = browserId + "_" + tabId;
-            System.out.println("DEBUG: getSessionId resolved: " + composite);
+            log.debug("getSessionId resolved: {}", composite);
             return composite;
         }
         return null;
