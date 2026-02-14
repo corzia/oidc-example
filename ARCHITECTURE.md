@@ -90,4 +90,10 @@ The system uses a **Hybrid Session Model**:
 2.  **Tab ID**: A unique string generated per tab (stored in `sessionStorage`) is passed in every request (`X-Tab-Id` header or `tabId` param).
 3.  **Composite Session**: Shiro sessions are keyed by `browserId_tabId`.
 
-This ensures that logging out of one provider in Tab A does not accidentally invalidate a session with a different provider in Tab B.
+## 🔍 Observability (OTLP)
+The project is designed to be compatible with **OpenTelemetry (OTLP)** for deep visibility into OIDC flows:
+1.  **Distributed Tracing**: Captures the entire authentication journey across redirects and back-channel token exchanges.
+2.  **Security Logs**: Exports structured logs for login attempts, token validations, and security filter actions (CSRF/Rate Limiting).
+3.  **Performance Metrics**: Tracks IdP latency and token exchange success rates.
+
+Usage details can be found in the [Observability Guide](USAGE.md#observability-pack).

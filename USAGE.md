@@ -110,6 +110,29 @@ curl -H "Authorization: Bearer $DEV_TOKEN" \
      "http://localhost:8080/oidc-example/api/rs/hello"
 ```
 
+## 🔍 Observability Pack (OTLP)
+You can monitor and trace OIDC flows using OpenTelemetry without modifying the source code.
+
+### 1. Start the Telemetry Stack
+Spin up Jaeger (for tracing) and the OTLP Collector:
+```bash
+cd telemetry
+docker-compose up -d
+```
+Access the Jaeger UI at `http://localhost:16686`.
+
+### 2. Attach the OpenTelemetry Java Agent
+Download the [OpenTelemetry Java Agent](https://github.com/open-telemetry/opentelemetry-java-instrumentation/releases/latest/download/opentelemetry-javaagent.jar) and add it to your Tomcat startup options:
+
+**In `bin/setenv.sh` (Tomcat):**
+```bash
+export CATALINA_OPTS="$CATALINA_OPTS -javaagent:/path/to/opentelemetry-javaagent.jar"
+export OTEL_SERVICE_NAME="oidc-example"
+export OTEL_EXPORTER_OTLP_ENDPOINT="http://localhost:4318"
+```
+
+Restart Tomcat. Your application will now automatically export traces and logs to the collector.
+
 ### 5. Refreshing Access Tokens
 If your OIDC provider returned a `refresh_token`, you can exchange it for a new access token without re-authenticating the user.
 

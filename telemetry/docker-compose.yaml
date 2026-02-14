@@ -1,0 +1,20 @@
+version: '3.8'
+
+services:
+  # Jaeger for trace visualization
+  jaeger:
+    image: jaegertracing/all-in-one:latest
+    ports:
+      - "16686:16686" # UI
+      - "4317:4317" # OTLP gRPC
+
+  # OTLP Collector for receiving/routing telemetry
+  otel-collector:
+    image: otel/opentelemetry-collector:latest
+    command: [ "--config=/etc/otel-collector-config.yaml" ]
+    volumes:
+      - ./otel-collector-config.yaml:/etc/otel-collector-config.yaml
+    ports:
+      - "4318:4318" # OTLP HTTP
+    depends_on:
+      - jaeger
