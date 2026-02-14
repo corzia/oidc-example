@@ -21,6 +21,7 @@ import java.util.Map;
 import java.util.Properties;
 import org.corzia.oidc.OidcClient;
 import org.corzia.oidc.OidcClientFactory;
+import org.corzia.oidc.OidcConstants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -47,7 +48,7 @@ public class OidcConfigManager {
                         String category = key.substring(0, dot).toLowerCase();
                         String subKey = key.substring(dot + 1);
 
-                        if ("security".equals(category)) {
+                        if (OidcConstants.CONFIG_SECURITY.equals(category)) {
                             securityConfigs.computeIfAbsent(category, k -> new Properties())
                                     .setProperty(subKey, p.getProperty(key));
                         } else {
@@ -145,7 +146,7 @@ public class OidcConfigManager {
      * Retrieves global security configuration (e.g. key starting with 'security.').
      * Category is usually 'security'.
      */
-    public static Properties getSecurityConfig(String category) {
+    public static final Properties getSecurityConfig(String category) {
         Properties p = securityConfigs.get(category.toLowerCase());
         Properties result = new Properties();
         if (p != null) {

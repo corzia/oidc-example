@@ -53,8 +53,8 @@ public class CsrfFilter implements Filter {
 
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
-        Properties securityProps = OidcConfigManager.getSecurityConfig("security");
-        String paths = securityProps.getProperty("csrf.exempt_paths");
+        Properties securityProps = OidcConfigManager.getSecurityConfig(OidcConstants.CONFIG_SECURITY);
+        String paths = securityProps.getProperty(OidcConstants.PROP_CSRF_EXEMPT_PATHS);
         if (paths != null && !paths.isBlank()) {
             for (String p : paths.split(",")) {
                 exemptPaths.add(p.trim());

@@ -24,6 +24,9 @@ public final class OidcConstants {
         // Private constructor to prevent instantiation
     }
 
+    // Configuration Categories
+    public static final String CONFIG_SECURITY = "security";
+
     // Headers
     public static final String HEADER_TAB_ID = "X-Tab-Id";
     public static final String HEADER_CSRF_TOKEN = "X-XSRF-TOKEN";
@@ -53,4 +56,7 @@ public final class OidcConstants {
     public static final String METHOD_PUT = "PUT";
     public static final String METHOD_DELETE = "DELETE";
     public static final String METHOD_PATCH = "PATCH";
+
+    // Configuration Properties
+    public static final String PROP_CSRF_EXEMPT_PATHS = "csrf.exempt_paths";
 }

@@ -14,9 +14,6 @@
  * limitations under the License.
  **************************************************************************/
 package org.corzia.oidc.shiro;
-import org.corzia.oidc.*;
-import org.corzia.oidc.internal.user.*;
-import org.corzia.oidc.internal.config.*;
 
 import jakarta.servlet.ServletContext;
 import jakarta.servlet.annotation.WebListener;
