@@ -21,6 +21,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
 import org.corzia.oidc.internal.config.OidcConfigManager;
+import org.osgi.framework.Constants;
 import org.osgi.service.cm.ConfigurationException;
 import org.osgi.service.cm.ManagedService;
 
@@ -31,7 +32,7 @@ public class ConfigAdminManagedService implements ManagedService {
 
     @Override
     public void updated(Dictionary<String, ?> properties) throws ConfigurationException {
-        String pid = properties != null ? (String) properties.get("service.pid") : null;
+        String pid = properties != null ? (String) properties.get(Constants.SERVICE_PID) : null;
         String provider = identifyProvider(pid);
 
         if (properties == null) {
