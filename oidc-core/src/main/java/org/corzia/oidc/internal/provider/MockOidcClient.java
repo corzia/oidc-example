@@ -14,10 +14,6 @@
  * limitations under the License.
  **************************************************************************/
 package org.corzia.oidc.internal.provider;
-import org.corzia.oidc.*;
-import org.corzia.oidc.shiro.*;
-import org.corzia.oidc.internal.utils.*;
-import org.corzia.oidc.internal.jwks.*;
 
 import java.util.Map;
 import java.util.Properties;
