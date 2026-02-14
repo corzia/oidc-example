@@ -38,6 +38,8 @@ public final class OidcConstants {
     public static final String PARAM_CODE = "code";
     public static final String PARAM_PROVIDER = "provider";
     public static final String PARAM_MESSAGE = "message";
+    public static final String PARAM_NONCE = "nonce";
+    public static final String PARAM_EMAIL = "email";
 
     // Session Attributes
     public static final String ATTR_CSRF_TOKEN = "CSRF_TOKEN";

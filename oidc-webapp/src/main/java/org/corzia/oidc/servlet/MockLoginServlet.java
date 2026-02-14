@@ -36,13 +36,13 @@ public class MockLoginServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws IOException {
 
-        String state = req.getParameter("state");
-        String nonce = req.getParameter("nonce");
+        String state = req.getParameter(OidcConstants.PARAM_STATE);
+        String nonce = req.getParameter(OidcConstants.PARAM_NONCE);
 
-        String csrfToken = (String) req.getSession().getAttribute("CSRF_TOKEN");
+        String csrfToken = (String) req.getSession().getAttribute(OidcConstants.ATTR_CSRF_TOKEN);
 
         resp.setContentType(OidcConstants.TYPE_HTML);
-        resp.getWriter().write(
+        resp.getWriter().format(
                 "<!DOCTYPE html>" +
                         "<html lang='en'>" +
                         "<head>" +
@@ -107,12 +107,12 @@ public class MockLoginServlet extends HttpServlet {
                         "        <h1>Account Login</h1>" +
                         "        <p class='info'>Simulating OIDC Provider</p>" +
                         "        <form method='POST'>" +
-                        "            <input type='hidden' name='state' value='" + state + "'>" +
-                        "            <input type='hidden' name='nonce' value='" + nonce + "'>" +
-                        "            <input type='hidden' name='_csrf' value='" + csrfToken + "'>" +
+                        "            <input type='hidden' name='%s' value='%s'>" +
+                        "            <input type='hidden' name='%s' value='%s'>" +
+                        "            <input type='hidden' name='%s' value='%s'>" +
                         "            <div class='form-group'>" +
-                        "                <label for='email'>Email Address</label>" +
-                        "                <input type='email' id='email' name='email' placeholder='name@company.com' required autocomplete='off'>"
+                        "                <label for='%s'>Email Address</label>" +
+                        "                <input type='email' id='%s' name='%s' placeholder='name@company.com' required autocomplete='off'>"
                         +
                         "            </div>" +
                         "            <button type='submit' class='btn'>Continue</button>" +
@@ -125,15 +125,19 @@ public class MockLoginServlet extends HttpServlet {
                         "        </div>" +
                         "    </div>" +
                         "</body>" +
-                        "</html>");
+                        "</html>",
+                OidcConstants.PARAM_STATE, state,
+                OidcConstants.PARAM_NONCE, nonce,
+                OidcConstants.PARAM_CSRF_TOKEN, csrfToken,
+                OidcConstants.PARAM_EMAIL, OidcConstants.PARAM_EMAIL, OidcConstants.PARAM_EMAIL);
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp)
             throws IOException {
 
-        String email = req.getParameter("email");
-        String state = req.getParameter("state");
+        String email = req.getParameter(OidcConstants.PARAM_EMAIL);
+        String state = req.getParameter(OidcConstants.PARAM_STATE);
 
         // Redirect back to our callback with the email as the 'code'
         java.util.Properties mockProps = org.corzia.oidc.shiro.OidcRealm.getOidcProviderConfig("mock");
@@ -144,6 +148,7 @@ public class MockLoginServlet extends HttpServlet {
             redirectUri = req.getContextPath() + "/portal/oidc/callback";
         }
 
-        resp.sendRedirect(redirectUri + "?code=" + email + "&state=" + state);
+        resp.sendRedirect(redirectUri + "?" + OidcConstants.PARAM_CODE + "=" + email + "&" + OidcConstants.PARAM_STATE
+                + "=" + state);
     }
 }

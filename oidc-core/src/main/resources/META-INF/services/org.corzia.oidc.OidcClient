@@ -1,4 +1,4 @@
-org.corzia.oidc.entra.EntraOidcClient
-org.corzia.oidc.google.GoogleOidcClient
-org.corzia.oidc.mock.MockOidcClient
-org.corzia.oidc.okta.OktaOidcClient
+org.corzia.oidc.internal.provider.EntraOidcClient
+org.corzia.oidc.internal.provider.GoogleOidcClient
+org.corzia.oidc.internal.provider.MockOidcClient
+org.corzia.oidc.internal.provider.OktaOidcClient
