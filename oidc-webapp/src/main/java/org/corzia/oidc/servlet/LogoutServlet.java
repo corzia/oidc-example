@@ -17,6 +17,7 @@ package org.corzia.oidc.servlet;
 
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
+import org.corzia.oidc.OidcConstants;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -34,7 +35,7 @@ public class LogoutServlet extends HttpServlet {
         if (subject.isAuthenticated()) {
             subject.logout();
         }
-        resp.setContentType("application/json");
+        resp.setContentType(OidcConstants.TYPE_JSON);
         resp.getWriter().write("{\"success\": true}");
     }
 }

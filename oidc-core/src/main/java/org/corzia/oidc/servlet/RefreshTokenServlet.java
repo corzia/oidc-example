@@ -14,9 +14,10 @@
  * limitations under the License.
  **************************************************************************/
 package org.corzia.oidc.servlet;
-import org.corzia.oidc.*;
-import org.corzia.oidc.shiro.*;
-import org.corzia.oidc.internal.user.*;
+
+import org.corzia.oidc.OidcConstants;
+import org.corzia.oidc.OidcUserInfo;
+import org.corzia.oidc.UserInfo;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -26,7 +27,6 @@ import java.io.PrintWriter;
 
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
-import org.corzia.oidc.OidcUserInfo;
 import org.corzia.oidc.internal.user.OidcUserDirectory;
 import org.corzia.oidc.internal.utils.HttpUtils;
 import org.corzia.oidc.internal.utils.TokenResponse;
@@ -103,7 +103,7 @@ public class RefreshTokenServlet extends jakarta.servlet.http.HttpServlet {
                     newTokens.getRefreshToken(),
                     oidcUserInfo.getClaims());
             OidcUserDirectory.put(username, updated);
-            response.setContentType("application/json");
+            response.setContentType(OidcConstants.TYPE_JSON);
             PrintWriter out = response.getWriter();
             out.print("{\"status\":\"refreshed\",\"accessToken\":\"" + newTokens.getAccessToken() + "\"}");
             out.flush();

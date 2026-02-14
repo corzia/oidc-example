@@ -14,9 +14,8 @@
  * limitations under the License.
  **************************************************************************/
 package org.corzia.oidc.shiro;
-import org.corzia.oidc.*;
-import org.corzia.oidc.internal.user.*;
-import org.corzia.oidc.internal.config.*;
+
+import org.corzia.oidc.OidcConstants;
 
 import io.github.bucket4j.Bandwidth;
 import io.github.bucket4j.Bucket;
@@ -71,7 +70,7 @@ public class RateLimitFilter implements Filter {
         } else {
             log.warn("Rate limit exceeded for IP: {} on URL: {}", clientIp, httpRequest.getRequestURI());
             httpResponse.setStatus(429); // Too Many Requests
-            httpResponse.setContentType("application/json");
+            httpResponse.setContentType(OidcConstants.TYPE_JSON);
             httpResponse.getWriter()
                     .write("{\"success\": false, \"message\": \"Too many requests. Please slow down.\"}");
         }

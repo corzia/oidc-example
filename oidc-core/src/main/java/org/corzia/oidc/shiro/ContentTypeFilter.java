@@ -44,13 +44,14 @@ public class ContentTypeFilter implements Filter {
         // 1. Validate 'Accept' header for all API requests
         String acceptHeader = httpRequest.getHeader("Accept");
         if (acceptHeader != null && !acceptHeader.contains("*/*")
-                && !acceptHeader.contains("application/json")
+                && !acceptHeader.contains(OidcConstants.TYPE_JSON)
                 && !acceptHeader.contains("application/*")) {
 
             httpResponse.setStatus(HttpServletResponse.SC_NOT_ACCEPTABLE); // 406
-            httpResponse.setContentType("application/json");
+            httpResponse.setContentType(OidcConstants.TYPE_JSON);
             httpResponse.getWriter()
-                    .write("{\"success\": false, \"message\": \"Only application/json is supported for responses.\"}");
+                    .write("{\"success\": false, \"message\": \"Only " + OidcConstants.TYPE_JSON
+                            + " is supported for responses.\"}");
             return;
         }
 
@@ -61,13 +62,14 @@ public class ContentTypeFilter implements Filter {
                 || OidcConstants.METHOD_PATCH.equalsIgnoreCase(method)) {
             String contentType = httpRequest.getContentType();
 
-            if (contentType == null || (!contentType.startsWith("application/json")
-                    && !contentType.startsWith("application/x-www-form-urlencoded"))) {
+            if (contentType == null || (!contentType.startsWith(OidcConstants.TYPE_JSON)
+                    && !contentType.startsWith(OidcConstants.TYPE_FORM))) {
 
                 httpResponse.setStatus(HttpServletResponse.SC_UNSUPPORTED_MEDIA_TYPE); // 415
-                httpResponse.setContentType("application/json");
+                httpResponse.setContentType(OidcConstants.TYPE_JSON);
                 httpResponse.getWriter().write(
-                        "{\"success\": false, \"message\": \"Unsupported Content-Type. Expected application/json or application/x-www-form-urlencoded.\"}");
+                        "{\"success\": false, \"message\": \"Unsupported Content-Type. Expected "
+                                + OidcConstants.TYPE_JSON + " or " + OidcConstants.TYPE_FORM + ".\"}");
                 return;
             }
         }

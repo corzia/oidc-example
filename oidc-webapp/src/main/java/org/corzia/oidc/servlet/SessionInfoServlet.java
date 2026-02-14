@@ -38,7 +38,7 @@ public class SessionInfoServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         try {
             Subject subject = SecurityUtils.getSubject();
-            resp.setContentType("application/json");
+            resp.setContentType(OidcConstants.TYPE_JSON);
 
             String tabId = null;
             Session session = subject.getSession(false);

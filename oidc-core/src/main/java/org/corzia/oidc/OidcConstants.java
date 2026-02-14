@@ -57,6 +57,12 @@ public final class OidcConstants {
     public static final String METHOD_DELETE = "DELETE";
     public static final String METHOD_PATCH = "PATCH";
 
+    // Content Types
+    public static final String TYPE_JSON = "application/json";
+    public static final String TYPE_TEXT = "text/plain";
+    public static final String TYPE_FORM = "application/x-www-form-urlencoded";
+    public static final String TYPE_HTML = "text/html";
+
     // Configuration Properties
     public static final String PROP_CSRF_EXEMPT_PATHS = "csrf.exempt_paths";
 }

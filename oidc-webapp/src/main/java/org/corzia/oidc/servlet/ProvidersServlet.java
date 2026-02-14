@@ -14,6 +14,7 @@
  * limitations under the License.
  **************************************************************************/
 package org.corzia.oidc.servlet;
+
 import org.corzia.oidc.*;
 import org.corzia.oidc.shiro.*;
 
@@ -28,6 +29,7 @@ import jakarta.servlet.http.HttpServletResponse;
 
 import org.corzia.oidc.OidcClient;
 import org.corzia.oidc.OidcClientFactory;
+import org.corzia.oidc.OidcConstants;
 import org.corzia.oidc.shiro.OidcRealm;
 
 /**
@@ -54,7 +56,7 @@ public class ProvidersServlet extends HttpServlet {
                         c.imageUrl() != null ? c.imageUrl() : ""))
                 .collect(Collectors.joining(",", "[", "]"));
 
-        resp.setContentType("application/json");
+        resp.setContentType(OidcConstants.TYPE_JSON);
         resp.setCharacterEncoding("UTF-8");
         resp.getWriter().write(json);
     }

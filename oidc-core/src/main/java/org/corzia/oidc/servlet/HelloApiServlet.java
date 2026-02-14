@@ -14,9 +14,8 @@
  * limitations under the License.
  **************************************************************************/
 package org.corzia.oidc.servlet;
-import org.corzia.oidc.*;
-import org.corzia.oidc.shiro.*;
-import org.corzia.oidc.internal.user.*;
+
+import org.corzia.oidc.OidcConstants;
 
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
@@ -35,7 +34,7 @@ public class HelloApiServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         Subject subject = SecurityUtils.getSubject();
 
-        resp.setContentType("application/json");
+        resp.setContentType(OidcConstants.TYPE_JSON);
         resp.getWriter().write("{"
                 + "\"message\": \"Hello from RS-API\", "
                 + "\"principal\": \"" + subject.getPrincipal() + "\""

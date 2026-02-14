@@ -14,8 +14,8 @@
  * limitations under the License.
  **************************************************************************/
 package org.corzia.oidc.servlet;
-import org.corzia.oidc.*;
-import org.corzia.oidc.shiro.*;
+
+import org.corzia.oidc.OidcConstants;
 
 import java.io.IOException;
 
@@ -41,7 +41,7 @@ public class MockLoginServlet extends HttpServlet {
 
         String csrfToken = (String) req.getSession().getAttribute("CSRF_TOKEN");
 
-        resp.setContentType("text/html");
+        resp.setContentType(OidcConstants.TYPE_HTML);
         resp.getWriter().write(
                 "<!DOCTYPE html>" +
                         "<html lang='en'>" +

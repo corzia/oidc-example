@@ -52,7 +52,7 @@ public class LoginServlet extends HttpServlet {
             subject.login(new UsernamePasswordToken(user, pass));
             log.info("User {} logged in successfully on tab {}", user, tabId);
 
-            resp.setContentType("application/json");
+            resp.setContentType(OidcConstants.TYPE_JSON);
             resp.getWriter().write("{\"success\": true, \"sessionId\": \"" + subject.getSession().getId() + "\"}");
 
         } catch (Exception e) {

@@ -14,11 +14,9 @@
  * limitations under the License.
  **************************************************************************/
 package org.corzia.oidc.servlet;
-import org.corzia.oidc.*;
-import org.corzia.oidc.shiro.*;
-import org.corzia.oidc.internal.user.*;
 
 import com.nimbusds.jose.JWSAlgorithm;
+import org.corzia.oidc.OidcConstants;
 import com.nimbusds.jose.JWSHeader;
 import com.nimbusds.jose.JWSSigner;
 import com.nimbusds.jose.crypto.MACSigner;
@@ -51,7 +49,7 @@ public class DevTokenServlet extends HttpServlet {
             SignedJWT signedJWT = new SignedJWT(new JWSHeader(JWSAlgorithm.HS256), claimsSet);
             signedJWT.sign(signer);
 
-            resp.setContentType("text/plain");
+            resp.setContentType(OidcConstants.TYPE_TEXT);
             resp.getWriter().write(signedJWT.serialize());
         } catch (Exception e) {
             throw new IOException(e);

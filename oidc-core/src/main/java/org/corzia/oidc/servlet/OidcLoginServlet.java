@@ -60,7 +60,7 @@ public class OidcLoginServlet extends HttpServlet {
         OidcClient client = clientFactory.getClient(providerName);
         if (!client.isConfigured()) {
             resp.setStatus(HttpServletResponse.SC_SERVICE_UNAVAILABLE);
-            resp.setContentType("text/plain");
+            resp.setContentType(OidcConstants.TYPE_TEXT);
             resp.getWriter().write("Provider '" + providerName + "' is not configured. "
                     + "Please check oidc-providers.properties on the server.");
             return;
