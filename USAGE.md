@@ -170,6 +170,28 @@ String displayName = OidcUserInfo.getUserName(userInfo);
 
 ---
 
+## 📦 Releasing
+
+This project uses GitHub Actions for automated releases, ensuring that builds are consistent and artifacts are readily available.
+
+### 🚀 Automated Release
+1.  **Tag the commit**: Create a version tag (e.g., `v1.0.0`).
+    ```bash
+    git tag -a v1.0.0 -m "Release version 1.0.0"
+    git push origin v1.0.0
+    ```
+2.  **Verify**: The [GitHub Action](.github/workflows/release.yml) will trigger, build the project, and create a GitHub Release with the shaded JAR and WAR files attached.
+
+### 🛠 Manual Release
+To build artifacts locally for distribution:
+```bash
+mvn clean package -DskipTests
+```
+- **Core JAR**: `oidc-core/target/oidc-core-<version>-shaded.jar`
+- **Webapp WAR**: `oidc-webapp/target/oidc-example.war`
+
+---
+
 ## 🛠 Features Refinement
 
 ### Enriched Standard Profiles
