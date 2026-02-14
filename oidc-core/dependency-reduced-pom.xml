@@ -55,6 +55,28 @@
                   </excludes>
                 </filter>
               </filters>
+              <relocations>
+                <relocation>
+                  <pattern>com.nimbusds</pattern>
+                  <shadedPattern>org.corzia.oidc.shaded.com.nimbusds</shadedPattern>
+                </relocation>
+                <relocation>
+                  <pattern>org.json</pattern>
+                  <shadedPattern>org.corzia.oidc.shaded.org.json</shadedPattern>
+                </relocation>
+                <relocation>
+                  <pattern>net.jcip</pattern>
+                  <shadedPattern>org.corzia.oidc.shaded.net.jcip</shadedPattern>
+                </relocation>
+                <relocation>
+                  <pattern>net.minidev</pattern>
+                  <shadedPattern>org.corzia.oidc.shaded.net.minidev</shadedPattern>
+                </relocation>
+                <relocation>
+                  <pattern>io.github.bucket4j</pattern>
+                  <shadedPattern>org.corzia.oidc.shaded.io.github.bucket4j</shadedPattern>
+                </relocation>
+              </relocations>
               <shadedArtifactAttached>true</shadedArtifactAttached>
               <shadedClassifierName>shaded</shadedClassifierName>
             </configuration>
@@ -77,6 +99,12 @@
       <version>2.0.0</version>
       <classifier>jakarta</classifier>
       <scope>provided</scope>
+      <exclusions>
+        <exclusion>
+          <artifactId>shiro-core</artifactId>
+          <groupId>org.apache.shiro</groupId>
+        </exclusion>
+      </exclusions>
     </dependency>
     <dependency>
       <groupId>jakarta.servlet</groupId>
@@ -98,8 +126,8 @@
     </dependency>
     <dependency>
       <groupId>org.osgi</groupId>
-      <artifactId>osgi.cmpn</artifactId>
-      <version>7.0.0</version>
+      <artifactId>org.osgi.service.cm</artifactId>
+      <version>1.6.1</version>
       <scope>provided</scope>
     </dependency>
     <dependency>

@@ -40,6 +40,12 @@
         <artifactId>shiro-web</artifactId>
         <classifier>jakarta</classifier>
         <version>${shiro.version}</version>
+        <exclusions>
+          <exclusion>
+            <groupId>org.apache.shiro</groupId>
+            <artifactId>shiro-core</artifactId>
+          </exclusion>
+        </exclusions>
       </dependency>
       <dependency>
         <groupId>jakarta.servlet</groupId>

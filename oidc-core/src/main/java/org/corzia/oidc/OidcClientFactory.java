@@ -19,7 +19,6 @@ import java.util.Collection;
 import java.util.Map;
 import java.util.Properties;
 import java.util.ServiceLoader;
-import java.util.ServiceConfigurationError;
 import java.util.concurrent.ConcurrentHashMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
