@@ -60,7 +60,7 @@ public class RefreshTokenServlet extends jakarta.servlet.http.HttpServlet {
             return;
         }
         String username = (String) subject.getPrincipal();
-        org.corzia.oidc.UserInfo userInfo = OidcUserDirectory.get(username);
+        UserInfo userInfo = OidcUserDirectory.get(username);
         if (userInfo == null) {
             response.sendError(HttpServletResponse.SC_BAD_REQUEST, "User info not found");
             return;
