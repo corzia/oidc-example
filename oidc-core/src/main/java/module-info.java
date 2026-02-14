@@ -19,11 +19,11 @@ module org.corzia.oidc {
     exports org.corzia.oidc.shiro;
     exports org.corzia.oidc.servlet;
 
-    // Transitive dependencies (types exposed in public API)
+    // Dependencies
     requires transitive jakarta.servlet;
-    requires transitive org.apache.shiro.core;
-    requires transitive org.apache.shiro.web;
-    requires transitive org.json;
+    requires org.apache.shiro.core;
+    requires org.apache.shiro.web;
+    requires org.json;
 
     // Implementation dependencies
     requires org.slf4j;

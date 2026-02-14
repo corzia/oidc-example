@@ -17,12 +17,19 @@
         <configuration>
           <instructions>
             <Bundle-SymbolicName>${project.artifactId}</Bundle-SymbolicName>
-            <Bundle-Activator>org.corzia.oidc.osgi.OidcActivator</Bundle-Activator>
-            <Export-Package>org.corzia.oidc.*</Export-Package>
-            <Import-Package>!com.nimbusds.*,
-                !org.json.*,
-                !io.github.bucket4j.*,
-                *</Import-Package>
+            <Bundle-Activator>org.corzia.oidc.internal.osgi.OidcActivator</Bundle-Activator>
+            <Export-Package>org.corzia.oidc;version="${project.version}",
+              org.corzia.oidc.servlet;version="${project.version}",
+              org.corzia.oidc.shiro;version="${project.version}"</Export-Package>
+            <Private-Package>org.corzia.oidc.internal.*</Private-Package>
+            <Import-Package>!org.corzia.oidc.internal.osgi,
+              !com.nimbusds.*,
+              !org.json.*,
+              !io.github.bucket4j.*,
+              *</Import-Package>
+            <_nouse>true</_nouse>
+            <_dsannotations>*</_dsannotations>
+            <_metatypeannotations>*</_metatypeannotations>
           </instructions>
         </configuration>
       </plugin>
@@ -46,6 +53,32 @@
                 </includes>
               </artifactSet>
               <filters>
+                <filter>
+                  <artifact>com.nimbusds:nimbus-jose-jwt</artifact>
+                  <excludes>
+                    <exclude>META-INF/MANIFEST.MF</exclude>
+                    <exclude>module-info.class</exclude>
+                  </excludes>
+                </filter>
+                <filter>
+                  <artifact>org.json:json</artifact>
+                  <excludes>
+                    <exclude>META-INF/MANIFEST.MF</exclude>
+                  </excludes>
+                </filter>
+                <filter>
+                  <artifact>com.github.stephenc.jcip:jcip-annotations</artifact>
+                  <excludes>
+                    <exclude>META-INF/MANIFEST.MF</exclude>
+                  </excludes>
+                </filter>
+                <filter>
+                  <artifact>com.bucket4j:bucket4j-core</artifact>
+                  <excludes>
+                    <exclude>META-INF/MANIFEST.MF</exclude>
+                    <exclude>module-info.class</exclude>
+                  </excludes>
+                </filter>
                 <filter>
                   <artifact>*:*</artifact>
                   <excludes>
@@ -135,6 +168,12 @@
       <artifactId>org.osgi.service.cm</artifactId>
       <version>1.6.1</version>
       <scope>provided</scope>
+      <exclusions>
+        <exclusion>
+          <artifactId>org.osgi.namespace.implementation</artifactId>
+          <groupId>org.osgi</groupId>
+        </exclusion>
+      </exclusions>
     </dependency>
     <dependency>
       <groupId>org.junit.jupiter</groupId>

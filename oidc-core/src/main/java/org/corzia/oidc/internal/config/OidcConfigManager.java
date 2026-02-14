@@ -35,7 +35,8 @@ public class OidcConfigManager {
     }
 
     private static void loadInitialConfig() {
-        try (InputStream is = OidcConfigManager.class.getResourceAsStream("/oidc-providers.properties")) {
+        try (InputStream is = OidcConfigManager.class
+                .getResourceAsStream("/org/corzia/oidc/oidc-providers.properties")) {
             if (is != null) {
                 Properties p = new Properties();
                 p.load(is);
