@@ -27,11 +27,15 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.IOException;
 import java.util.Date;
 
 @WebServlet("/api/dev/token")
 public class DevTokenServlet extends HttpServlet {
+    private static final Logger log = LoggerFactory.getLogger(DevTokenServlet.class);
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
@@ -52,6 +56,7 @@ public class DevTokenServlet extends HttpServlet {
             resp.setContentType(OidcConstants.TYPE_TEXT);
             resp.getWriter().write(signedJWT.serialize());
         } catch (Exception e) {
+            log.error("Failed to generate dev token", e);
             throw new IOException(e);
         }
     }

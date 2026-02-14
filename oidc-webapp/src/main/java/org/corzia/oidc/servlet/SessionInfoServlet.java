@@ -22,6 +22,8 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.session.Session;
@@ -33,6 +35,8 @@ import org.json.JSONObject;
 
 @WebServlet("/api/session")
 public class SessionInfoServlet extends HttpServlet {
+    private static final Logger log = LoggerFactory.getLogger(SessionInfoServlet.class);
+    private static final long serialVersionUID = 1L;
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -82,7 +86,7 @@ public class SessionInfoServlet extends HttpServlet {
 
             resp.getWriter().write(json.toString());
         } catch (Exception e) {
-            org.slf4j.LoggerFactory.getLogger(SessionInfoServlet.class).error("Failed to retrieve session info", e);
+            log.error("Failed to retrieve session info", e);
             resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
             resp.getWriter().write("{\"" + OidcConstants.JKEY_SUCCESS + "\": false, \"" + OidcConstants.JKEY_MESSAGE
                     + "\": \"Internal server error\"}");
