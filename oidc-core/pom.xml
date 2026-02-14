@@ -20,6 +20,11 @@
     </dependency>
     <dependency>
       <groupId>org.apache.shiro</groupId>
+      <artifactId>shiro-lang</artifactId>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.shiro</groupId>
       <artifactId>shiro-web</artifactId>
       <classifier>jakarta</classifier>
       <scope>provided</scope>

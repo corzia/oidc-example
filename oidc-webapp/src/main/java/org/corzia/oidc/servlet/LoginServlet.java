@@ -15,18 +15,20 @@
  **************************************************************************/
 package org.corzia.oidc.servlet;
 
-import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.authc.UsernamePasswordToken;
-import org.apache.shiro.subject.Subject;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import java.io.IOException;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.io.IOException;
+
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.authc.UsernamePasswordToken;
+import org.apache.shiro.subject.Subject;
+import org.corzia.oidc.OidcConstants;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @WebServlet("/api/login")
 public class LoginServlet extends HttpServlet {
@@ -35,14 +37,12 @@ public class LoginServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        // Simple JSON content type (assuming filters parse params or we read body)
-        // For simplicity, reading query params or form data
         String user = req.getParameter("username");
         String pass = req.getParameter("password");
-        String tabId = req.getHeader("X-Tab-Id");
+        String tabId = req.getHeader(OidcConstants.HEADER_TAB_ID);
 
         if (tabId == null || tabId.isBlank()) {
-            resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "X-Tab-Id header is required");
+            resp.sendError(HttpServletResponse.SC_BAD_REQUEST, OidcConstants.HEADER_TAB_ID + " header is required");
             return;
         }
 

@@ -14,6 +14,8 @@
  * limitations under the License.
  **************************************************************************/
 package org.corzia.oidc.servlet;
+import org.corzia.oidc.*;
+import org.corzia.oidc.shiro.*;
 
 import java.io.IOException;
 
@@ -134,8 +136,8 @@ public class MockLoginServlet extends HttpServlet {
         String state = req.getParameter("state");
 
         // Redirect back to our callback with the email as the 'code'
-        java.util.Properties mockProps = org.corzia.oidc.OidcRealm.getOidcProviderConfig("mock");
-        String redirectUri = mockProps.getProperty(org.corzia.oidc.OidcRealm.REDIRECT_URI);
+        java.util.Properties mockProps = org.corzia.oidc.shiro.OidcRealm.getOidcProviderConfig("mock");
+        String redirectUri = mockProps.getProperty(org.corzia.oidc.shiro.OidcRealm.REDIRECT_URI);
 
         if (redirectUri == null || redirectUri.isBlank()) {
             // Fallback to relative path if not configured

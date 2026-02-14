@@ -37,6 +37,11 @@
       </dependency>
       <dependency>
         <groupId>org.apache.shiro</groupId>
+        <artifactId>shiro-lang</artifactId>
+        <version>${shiro.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.apache.shiro</groupId>
         <artifactId>shiro-web</artifactId>
         <classifier>jakarta</classifier>
         <version>${shiro.version}</version>

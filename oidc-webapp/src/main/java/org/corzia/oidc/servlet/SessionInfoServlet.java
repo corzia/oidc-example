@@ -15,19 +15,21 @@
  **************************************************************************/
 package org.corzia.oidc.servlet;
 
-import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.subject.Subject;
-import org.apache.shiro.session.Session;
-import org.corzia.oidc.OidcUserDirectory;
-import org.corzia.oidc.UserInfo;
-import org.json.JSONObject;
+import java.io.IOException;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import java.io.IOException;
+
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.session.Session;
+import org.apache.shiro.subject.Subject;
+import org.corzia.oidc.OidcConstants;
+import org.corzia.oidc.UserInfo;
+import org.corzia.oidc.internal.user.OidcUserDirectory;
+import org.json.JSONObject;
 
 @WebServlet("/api/session")
 public class SessionInfoServlet extends HttpServlet {
@@ -41,17 +43,16 @@ public class SessionInfoServlet extends HttpServlet {
             String tabId = null;
             Session session = subject.getSession(false);
             if (session != null) {
-                tabId = (String) session
-                        .getAttribute(org.corzia.oidc.config.HybridWebSessionManager.SESSION_ATTR_TAB_ID);
+                tabId = (String) session.getAttribute(OidcConstants.ATTR_TAB_ID);
             }
             if (tabId == null) {
-                tabId = req.getHeader("X-Tab-Id");
+                tabId = req.getHeader(OidcConstants.HEADER_TAB_ID);
             }
 
             String browserId = null;
             if (req.getCookies() != null) {
                 for (jakarta.servlet.http.Cookie c : req.getCookies()) {
-                    if ("OIDC_BROWSER_ID".equals(c.getName())) {
+                    if (OidcConstants.COOKIE_BROWSER_ID.equals(c.getName())) {
                         browserId = c.getValue();
                     }
                 }

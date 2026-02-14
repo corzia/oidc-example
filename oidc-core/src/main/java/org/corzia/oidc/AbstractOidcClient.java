@@ -21,6 +21,9 @@ import java.util.Date;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 
+import org.corzia.oidc.shiro.OidcRealm;
+import org.corzia.oidc.internal.jwks.JwksKeyCache;
+
 import com.nimbusds.jose.JWSHeader;
 import com.nimbusds.jose.JWSVerifier;
 import com.nimbusds.jose.crypto.RSASSAVerifier;
@@ -28,8 +31,6 @@ import com.nimbusds.jose.jwk.JWK;
 import com.nimbusds.jose.jwk.RSAKey;
 import com.nimbusds.jwt.JWTClaimsSet;
 import com.nimbusds.jwt.SignedJWT;
-
-import org.corzia.oidc.jwks.JwksKeyCache;
 
 /**
  * Convenience base class for {@link OidcClient} implementations.

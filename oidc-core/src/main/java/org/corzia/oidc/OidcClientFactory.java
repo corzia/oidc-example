@@ -22,7 +22,7 @@ import java.util.ServiceLoader;
 import java.util.concurrent.ConcurrentHashMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.corzia.oidc.config.OidcConfigManager;
+import org.corzia.oidc.internal.config.OidcConfigManager;
 
 /**
  * Simple registry / factory for {@link OidcClient} instances.

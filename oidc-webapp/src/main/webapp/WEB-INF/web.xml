@@ -4,7 +4,7 @@
          version="6.0">
 
     <listener>
-        <listener-class>org.corzia.oidc.config.ShiroListener</listener-class>
+        <listener-class>org.corzia.oidc.shiro.ShiroListener</listener-class>
     </listener>
 
     <filter>
@@ -23,7 +23,7 @@
 
     <servlet>
         <servlet-name>RefreshTokenServlet</servlet-name>
-        <servlet-class>org.corzia.oidc.api.RefreshTokenServlet</servlet-class>
+        <servlet-class>org.corzia.oidc.servlet.RefreshTokenServlet</servlet-class>
     </servlet>
 
     <servlet-mapping>

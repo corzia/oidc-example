@@ -14,6 +14,8 @@
  * limitations under the License.
  **************************************************************************/
 package org.corzia.oidc.servlet;
+import org.corzia.oidc.*;
+import org.corzia.oidc.shiro.*;
 
 import java.io.IOException;
 import java.util.Collection;
@@ -26,7 +28,7 @@ import jakarta.servlet.http.HttpServletResponse;
 
 import org.corzia.oidc.OidcClient;
 import org.corzia.oidc.OidcClientFactory;
-import org.corzia.oidc.OidcRealm;
+import org.corzia.oidc.shiro.OidcRealm;
 
 /**
  * Servlet that returns a JSON list of configured OIDC providers.
