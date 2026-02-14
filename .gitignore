@@ -40,4 +40,5 @@ logs/
 *.exe
 *.dll
 *.so
-*.dylib
+# Credentials
+oidc-providers.properties

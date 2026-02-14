@@ -13,8 +13,16 @@ A professional Java web application demonstrating the integration of OpenID Conn
 ## Getting Started
 
 ### Prerequisites
-- Java 17 or higher
+- Java 21 or higher
 - Maven 3.8+
+
+### Configuration
+1.  Copy the OIDC providers sample file:
+    ```bash
+    cp oidc-core/src/main/resources/org/corzia/oidc/oidc-providers.properties.sample \
+       oidc-core/src/main/resources/org/corzia/oidc/oidc-providers.properties
+    ```
+2.  Edit `oidc-core/src/main/resources/org/corzia/oidc/oidc-providers.properties` and add your client secrets.
 
 ### Build and Run
 ```bash
@@ -40,7 +48,7 @@ The application will be available at: `http://localhost:8080/` (since it is depl
 To use your own `oidc-providers.properties`, mount it as a volume:
 ```bash
 docker run -d -p 8080:8080 \
-  -v $(pwd)/src/main/resources/oidc-providers.properties:/usr/local/tomcat/webapps/ROOT/WEB-INF/classes/oidc-providers.properties \
+  -v $(pwd)/oidc-core/src/main/resources/org/corzia/oidc/oidc-providers.properties:/usr/local/tomcat/webapps/ROOT/WEB-INF/classes/org/corzia/oidc/oidc-providers.properties \
   --name oidc-app oidc-example
 ```
 
@@ -52,7 +60,7 @@ docker run -d -p 8080:8080 \
 The primary authentication method for end-users.
 
 **Configuration:**
-Settings are managed in `src/main/resources/oidc-providers.properties`.
+Settings are managed in `oidc-core/src/main/resources/org/corzia/oidc/oidc-providers.properties`.
 
 ```properties
 # Example for Google
@@ -164,7 +172,6 @@ When displaying user names in your application, use the standardized helper in `
 
 ```java
 // Logic: Returns 'name' claim if present/non-blank, otherwise fallback to username
-// Now supports both UserInfo and OidcUserInfo types.
 String displayName = OidcUserInfo.getUserName(userInfo);
 ```
 
@@ -189,13 +196,6 @@ mvn clean package -DskipTests
 ```
 - **Core JAR**: `oidc-core/target/oidc-core-<version>-shaded.jar`
 - **Webapp WAR**: `oidc-webapp/target/oidc-example.war`
-
----
-
-## 🛠 Features Refinement
-
-### Enriched Standard Profiles
-Logging in with `test/test` now provides a full profile including email, full name, and locale, demonstrating how the `UserInfo` architecture standardizes identity across different authentication sources.
 
 ---
 
