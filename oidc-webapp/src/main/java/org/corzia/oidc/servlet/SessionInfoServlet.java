@@ -60,21 +60,22 @@ public class SessionInfoServlet extends HttpServlet {
 
             JSONObject json = new JSONObject();
             json.put(OidcConstants.JKEY_SUCCESS, true); // Added success for consistency
-            json.put("authenticated", subject.isAuthenticated());
-            json.put("user", subject.getPrincipal() != null ? subject.getPrincipal().toString() : null);
-            json.put("sessionId", session != null ? session.getId() : null);
-            json.put("tabId", tabId);
-            json.put("browserId", browserId);
+            json.put(OidcConstants.JKEY_AUTHENTICATED, subject.isAuthenticated());
+            json.put(OidcConstants.JKEY_USER,
+                    subject.getPrincipal() != null ? subject.getPrincipal().toString() : null);
+            json.put(OidcConstants.JKEY_SESSION_ID, session != null ? session.getId() : null);
+            json.put(OidcConstants.JKEY_TAB_ID, tabId);
+            json.put(OidcConstants.JKEY_BROWSER_ID, browserId);
 
             if (subject.isAuthenticated()) {
                 Object principal = subject.getPrincipal();
                 if (principal instanceof UserInfo) {
-                    json.put("userInfo", ((UserInfo) principal).toJson());
+                    json.put(OidcConstants.JKEY_USER_INFO, ((UserInfo) principal).toJson());
                 } else if (principal instanceof String) {
                     String username = (String) principal;
                     UserInfo userInfo = OidcUserDirectory.get(username);
                     if (userInfo != null) {
-                        json.put("userInfo", userInfo.toJson());
+                        json.put(OidcConstants.JKEY_USER_INFO, userInfo.toJson());
                     }
                 }
             }

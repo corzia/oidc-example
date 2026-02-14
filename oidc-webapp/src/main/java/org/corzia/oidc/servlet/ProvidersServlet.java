@@ -15,9 +15,6 @@
  **************************************************************************/
 package org.corzia.oidc.servlet;
 
-import org.corzia.oidc.*;
-import org.corzia.oidc.shiro.*;
-
 import java.io.IOException;
 import java.util.Collection;
 import java.util.stream.Collectors;
@@ -50,7 +47,8 @@ public class ProvidersServlet extends HttpServlet {
         String json = clients.stream()
                 .filter(OidcClient::isConfigured)
                 .map(c -> String.format(
-                        "{\"name\": \"%s\", \"displayName\": \"%s\", \"imageUrl\": \"%s\"}",
+                        "{\"" + OidcConstants.JKEY_NAME + "\": \"%s\", \"" + OidcConstants.JKEY_DISPLAY_NAME
+                                + "\": \"%s\", \"" + OidcConstants.JKEY_IMAGE_URL + "\": \"%s\"}",
                         c.getName(),
                         capitalize(c.getName()),
                         c.imageUrl() != null ? c.imageUrl() : ""))

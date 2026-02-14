@@ -68,6 +68,15 @@ public final class OidcConstants {
     // JSON Keys
     public static final String JKEY_SUCCESS = "success";
     public static final String JKEY_MESSAGE = "message";
+    public static final String JKEY_AUTHENTICATED = "authenticated";
+    public static final String JKEY_USER = "user";
+    public static final String JKEY_SESSION_ID = "sessionId";
+    public static final String JKEY_TAB_ID = "tabId";
+    public static final String JKEY_BROWSER_ID = "browserId";
+    public static final String JKEY_USER_INFO = "userInfo";
+    public static final String JKEY_NAME = "name";
+    public static final String JKEY_DISPLAY_NAME = "displayName";
+    public static final String JKEY_IMAGE_URL = "imageUrl";
 
     // Configuration Properties
     public static final String PROP_CSRF_EXEMPT_PATHS = "csrf.exempt_paths";
