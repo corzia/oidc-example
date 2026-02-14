@@ -44,7 +44,7 @@ public final class OidcConstants {
     public static final String ATTR_SAVED_REQUEST = "shiroSavedRequestUrl";
 
     // Cookie Names
-    public static final String COOKIE_BROWSER_ID = "OIDC_BROWSER_ID";
+    public static final String COOKIE_BROWSER_ID = "JSESSIONID";
     public static final String COOKIE_CSRF_TOKEN = "XSRF-TOKEN";
 
     // HTTP Methods
