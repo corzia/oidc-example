@@ -12,6 +12,22 @@ const OidcClient = (() => {
 
     // Initialize or retrieve Tab ID
     let currentTabId = sessionStorage.getItem(TAB_ID_SESSION_KEY);
+
+    // Capture from URL if present (useful for redirects/callbacks)
+    const url = new URL(window.location.href);
+    const urlTabId = url.searchParams.get(TAB_ID_SESSION_KEY);
+
+    if (urlTabId) {
+        // If we don't have a tabId yet, take it from the URL
+        if (!currentTabId) {
+            currentTabId = urlTabId;
+            sessionStorage.setItem(TAB_ID_SESSION_KEY, currentTabId);
+        }
+        // Always strip from URL for cleaner UX, regardless of whether we used it or ignored it
+        url.searchParams.delete(TAB_ID_SESSION_KEY);
+        window.history.replaceState(null, '', url.pathname + url.search + url.hash);
+    }
+
     if (!currentTabId) {
         currentTabId = "tab-" + Math.random().toString(36).substring(2, 9);
         sessionStorage.setItem(TAB_ID_SESSION_KEY, currentTabId);
